@@ -8,7 +8,6 @@
 using namespace std;
 
 
-// Добавить проверки
 
 vector<string> SplitString(string s, string del) {
     vector<string> words;

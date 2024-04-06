@@ -50,7 +50,7 @@ int main()
             if (fline > 0)
             {
                 sum += stof(line);
-                arr.push_back(fline); // Добавлям в исходный вектор только положительные элементы
+                arr.push_back(fline); // Добавляем в исходный вектор только положительные элементы
             }
             lineNumber++;
         }
