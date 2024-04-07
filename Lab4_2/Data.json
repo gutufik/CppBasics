@@ -1,0 +1,32 @@
+[
+  {
+    "ModelName": "Plustek OpticSlim 2610 Pro",
+    "Price": 11999,
+    "HorizontalSize": 216,
+    "VerticalSize": 295
+  },
+  {
+    "ModelName": "Avision FB10",
+    "Price": 13499,
+    "HorizontalSize": 210,
+    "VerticalSize": 297
+  },
+  {
+    "ModelName": "Fujitsu fi-65F",
+    "Price": 24799,
+    "HorizontalSize": 105,
+    "VerticalSize": 148
+  },
+  {
+    "ModelName": "VIISAN VF3120",
+    "Price": 34999,
+    "HorizontalSize": 297,
+    "VerticalSize": 420
+  },
+  {
+    "ModelName": "Plustek OpticSlim 1180",
+    "Price": 35999,
+    "HorizontalSize": 297,
+    "VerticalSize": 431.8
+  }
+]
