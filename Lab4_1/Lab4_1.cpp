@@ -6,7 +6,15 @@
 
 using namespace std;
 
-//Добавить проверки!!!
+
+bool TryParseFloat(string str, float& result)
+{
+    if (sscanf_s(str.data(), "%f", &result) != 1) {
+        cout << "Невозможно преобразовать значение в число\n";
+        return false;
+    }
+    return true;
+}
 
 struct Vector {
     float x;
@@ -77,6 +85,9 @@ struct LinkedList {
     }
 
     Vector Max() {
+        if (Length == 0) {
+            throw length_error("Cannot find maximum value in an empty list.");
+        }
         Vector max = *(*Head).Value;
 
         for (int i = 1; i < Length; i++) {
@@ -90,7 +101,7 @@ struct LinkedList {
     int IndexOf(Vector vector) {
         int index = -1;
 
-        for (int i = 1; i < Length; i++) {
+        for (int i = 0; i < Length; i++) {
             if ((*this)[i] == vector) {
                 return i;
             }
@@ -105,33 +116,54 @@ int main()
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Russian");
 
-    int vectorCount;
+
+    string inputString;
+    float vectorCount;
+
+
     LinkedList* vectors = new LinkedList();
 
     cout << "Введите количество векторов\n";
-    cin >> vectorCount;
+    cin >> inputString;
+
+    if (!TryParseFloat(inputString, vectorCount)) {
+        return 1;
+    }
+    if (vectorCount <= 0) {
+        cout << "Количество должно быть больше 0\n";
+        return 1;
+    }
 
     for (int i = 0; i < vectorCount; i++) 
     {
         Vector* vector = new Vector();
         cout << format("Введите x для {}-го вектора\n", i + 1);
-        cin >> vector->x;
+
+        cin >> inputString;
+
+        if (!TryParseFloat(inputString, vector->x)) {
+            return 1;
+        }
 
         cout << format("Введите y для {}-го вектора\n", i + 1);
-        cin >> vector->y;
+        cin >> inputString;
+
+        if (!TryParseFloat(inputString, vector->y)) {
+            return 1;
+        }
 
         cout << format("Введите z для {}-го вектора\n", i + 1);
-        cin >> vector->z;
+        cin >> inputString;
+
+        if (!TryParseFloat(inputString, vector->z)) {
+            return 1;
+        }
 
         vectors->PushBack(vector);
 
-        cout << format("Длина {}-го вектора = {}\n", i + 1, vector->GetLength());
+        cout << format("Длина {}-го вектора = {}\n\n", i + 1, vector->GetLength());
     }
     try {
-        
-        for (int i = 0; i < vectorCount; i++) {
-            cout << (*vectors)[i].GetLength() << endl;
-        }
 
         Vector maxVector = vectors->Max();
         cout << "Максимальная длина вектора " << maxVector.GetLength() << endl;
