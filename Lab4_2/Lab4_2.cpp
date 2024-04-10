@@ -2,11 +2,29 @@
 #include <stdexcept>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <format>
+#include <iomanip>
+#include <string>
 #include <Windows.h>
 #include <json/json.h>
 #include <json/value.h>
 
 using namespace std;
+
+bool IsSizeValid(float size, string notValidMessage) {
+    bool valid = size > 0;
+    if (!valid) cout << notValidMessage;
+    return valid;
+}
+
+bool TryParseFloat(string str, float& result) {
+    if (sscanf_s(str.data(), "%f", &result) != 1) {
+        cout << "Ќевозможно преобразовать значение в число\n";
+        return false;
+    }
+    return true;
+}
 
 struct TabletScanner {
     string ModelName;
@@ -20,6 +38,14 @@ struct TabletScanner {
         Price = price;
         HorizontalSize = horizontalSize;
         VerticalSize = verticalsize;
+    }
+
+    string ToString() {
+        stringstream stream;
+
+        stream << fixed << setprecision(2) << HorizontalSize;
+
+        return format("{} {}x{} {}\n", ModelName, HorizontalSize, VerticalSize, Price);
     }
 };
 
@@ -46,7 +72,6 @@ struct LinkedList
         Length = 0;
     }
 
-
     void PushBack(TabletScanner* scanner) {
         Node* newNode = new Node(scanner);
 
@@ -65,7 +90,7 @@ struct LinkedList
         Length++;
     }
 
-    TabletScanner operator[](int index) {
+    TabletScanner* operator[](int index) {
         if (index < 0 || index >= Length)
         {
             throw out_of_range("Index out of range");
@@ -76,14 +101,28 @@ struct LinkedList
         for (int i = 0; i < index; i++) {
             resultNode = resultNode->Next;
         }
-        return *resultNode->Value;
+        return resultNode->Value;
     }
 
-    LinkedList Filter() {
+    LinkedList* Filter(float minVSize, float maxVSize, float minHSize, float maxHSize) {
+        LinkedList* filteredList = new LinkedList();
+        
+        for (int i = 0; i < Length; i++) {
+            if ((*this)[i]->VerticalSize >= minVSize &&
+                (*this)[i]->VerticalSize < maxVSize &&
+                (*this)[i]->HorizontalSize >= minHSize &&
+                (*this)[i]->HorizontalSize < maxHSize) {
 
+                TabletScanner* sc = (*this)[i];
+
+                filteredList->PushBack(sc);
+            }
+        }
+
+
+        return filteredList;
     }
 };
-
 
 int main()
 {
@@ -99,7 +138,6 @@ int main()
 
     reader.parse(file, json);
 
-
     for (int i = 0; i < json.size(); i++) {
 
         string str = json[i]["ModelName"].asString().c_str();
@@ -113,6 +151,49 @@ int main()
 
         scannerList->PushBack(scanner);
     }
-    cout << json << endl;
 
+    string inputString;
+    float minVSize, maxVSize, minHSize, maxHSize;
+
+    cout << "¬ведите минимальный горизонтальный размер\n";
+    cin >> inputString;
+
+    if (!TryParseFloat(inputString, minHSize)) return 1;
+    if (!IsSizeValid(minHSize, "–азмер должен быть больше 0\n")) return 1;
+
+    cout << "¬ведите максимальный горизонтальный размер\n";
+    cin >> inputString;
+
+    if (!TryParseFloat(inputString, maxHSize)) return 1;
+    if (!IsSizeValid(maxHSize, "–азмер должен быть больше 0\n")) return 1;
+    if (minHSize > maxHSize) {
+        cout << "ћаксимальный размер должен быть больше минимального";
+        return 1;
+    }
+
+    cout << "¬ведите минимальный вертикальный размер\n";
+    cin >> inputString;
+
+    if (!TryParseFloat(inputString, minVSize)) return 1;
+    if (!IsSizeValid(minVSize, "–азмер должен быть больше 0\n")) return 1;
+
+    cout << "¬ведите максимальный вертикальный размер\n";
+    cin >> inputString;
+
+    if (!TryParseFloat(inputString, maxVSize)) return 1;
+    if (!IsSizeValid(maxVSize, "–азмер должен быть больше 0\n")) return 1;
+    if (minVSize > maxVSize) {
+        cout << "ћаксимальный размер должен быть больше минимального";
+        return 1;
+    }
+
+    LinkedList* filteredList = scannerList->Filter(minVSize, maxVSize, minHSize, maxHSize);
+
+    if (filteredList->Length == 0) cout << "Ќечего не найдено";
+
+    for (int i = 0; i < filteredList->Length; i++) {
+        cout << (*filteredList)[i]->ToString();
+    }
+
+    return 0;
 }
