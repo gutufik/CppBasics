@@ -133,6 +133,11 @@ int main()
     LinkedList* scannerList = new LinkedList();
 
     fstream file("Data.json");
+    if (file.fail()) {
+        cout << "Не удается открыть файл Data.json";
+        return 1;
+    }
+
     Json::Value json;
     Json::Reader reader;
 
