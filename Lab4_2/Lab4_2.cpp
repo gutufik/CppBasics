@@ -195,7 +195,7 @@ int main()
     LinkedList* filteredList = scannerList->Filter(minVSize, maxVSize, minHSize, maxHSize);
 
     if (filteredList->Length == 0) cout << "Ничего не найдено";
-
+    else cout << "Сканеры, удовлетворяющие условию \n";
     for (int i = 0; i < filteredList->Length; i++) {
         cout << (*filteredList)[i]->ToString();
     }
