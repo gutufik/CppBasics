@@ -5,124 +5,13 @@
 #include <sstream>
 #include <format>
 #include <iomanip>
-#include <string>
 #include <Windows.h>
 #include <json/json.h>
 #include <json/value.h>
+#include "LinkedList.h"
+#include "ValidationFunctions.h"
 
 using namespace std;
-
-bool IsSizeValid(float size, string notValidMessage) {
-    bool valid = size > 0;
-    if (!valid) cout << notValidMessage;
-    return valid;
-}
-
-bool TryParseFloat(string str, float& result) {
-    if (sscanf_s(str.data(), "%f", &result) != 1) {
-        cout << "Невозможно преобразовать значение в число\n";
-        return false;
-    }
-    return true;
-}
-
-struct TabletScanner {
-    string ModelName;
-    float Price;
-    float HorizontalSize;
-    float VerticalSize;
-
-    TabletScanner(string modelName, float price, float horizontalSize, float verticalsize)
-    {
-        ModelName = modelName;
-        Price = price;
-        HorizontalSize = horizontalSize;
-        VerticalSize = verticalsize;
-    }
-
-    string ToString() {
-        stringstream stream;
-
-        stream << fixed << setprecision(2) << HorizontalSize;
-
-        return format("{} {}x{} {}\n", ModelName, HorizontalSize, VerticalSize, Price);
-    }
-};
-
-
-struct Node {
-    Node* Next;
-    TabletScanner* Value;
-
-    Node(TabletScanner* scanner) {
-        Next = NULL;
-        Value = scanner;
-    }
-};
-
-struct LinkedList
-{
-    Node* Head;
-    int Length;
-
-
-    LinkedList()
-    {
-        Head = NULL;
-        Length = 0;
-    }
-
-    void PushBack(TabletScanner* scanner) {
-        Node* newNode = new Node(scanner);
-
-        if (Length == 0) {
-            Head = newNode;
-        }
-        else {
-            Node* lastNode = Head;
-            while (lastNode->Next != NULL)
-            {
-                lastNode = lastNode->Next;
-            }
-
-            lastNode->Next = newNode;
-        }
-        Length++;
-    }
-
-    TabletScanner* operator[](int index) {
-        if (index < 0 || index >= Length)
-        {
-            throw out_of_range("Index out of range");
-        }
-
-        Node* resultNode = Head;
-
-        for (int i = 0; i < index; i++) {
-            resultNode = resultNode->Next;
-        }
-        return resultNode->Value;
-    }
-
-    LinkedList* Filter(float minVSize, float maxVSize, float minHSize, float maxHSize) {
-        LinkedList* filteredList = new LinkedList();
-        
-        for (int i = 0; i < Length; i++) {
-            if ((*this)[i]->VerticalSize >= minVSize &&
-                (*this)[i]->VerticalSize < maxVSize &&
-                (*this)[i]->HorizontalSize >= minHSize &&
-                (*this)[i]->HorizontalSize < maxHSize) {
-
-                TabletScanner* sc = (*this)[i];
-
-                filteredList->PushBack(sc);
-            }
-        }
-
-
-        return filteredList;
-    }
-};
 
 int main()
 {
@@ -156,6 +45,12 @@ int main()
 
         scannerList->PushBack(scanner);
     }
+
+    if (scannerList->IsEmpty()) {
+        cout << "Исходный файл с данными пустой\n";
+        return 1;
+    }
+
 
     string inputString;
     float minVSize, maxVSize, minHSize, maxHSize;
