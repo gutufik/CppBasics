@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Lab8.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,19 +29,10 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Split.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PrintList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PrintMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

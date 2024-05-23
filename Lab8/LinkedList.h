@@ -1,8 +1,16 @@
-#include "Node.h"
 #include <string> 
 #include <fstream>
 
 using namespace std;
+
+struct Node
+{
+    Node* Next;
+    Student* Value; Node(Student* student) {
+        Next = NULL;
+        Value = student;
+    }
+};
 
 struct LinkedList
 {
@@ -80,3 +88,24 @@ struct LinkedList
         return filteredList;
     }
 };
+
+void PrintList(LinkedList* list)
+{
+    for (int i = 0; i < list->Length; i++)
+    {
+        cout << (*list)[i]->ToString();
+    }
+}
+
+void SortList(LinkedList* students) {
+    for (int i = 0; i < students->Length; i++)
+    {
+        for (int j = 0; j < students->Length; j++)
+        {
+            if ((*students)[i]->GetAverageMark() > (*students)[j]->GetAverageMark())
+            {
+                swap(*(*students)[i], *(*students)[j]);
+            }
+        }
+    }
+}
