@@ -129,6 +129,18 @@
   <ItemGroup>
     <ClCompile Include="Lab8.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Students.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="PrintList.h" />
+    <ClInclude Include="PrintMenu.h" />
+    <ClInclude Include="ReadFile.h" />
+    <ClInclude Include="Split.h" />
+    <ClInclude Include="Student.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

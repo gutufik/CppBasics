@@ -38,9 +38,12 @@ struct Stack
         if (!IsEmpty())
         {
             topValue = Top->Value;
+            Node* pw = Top;
             Top = Top->Next;
+            delete pw;
             Depth--;
         }
+
         return topValue;
     }
     bool IsEmpty()
