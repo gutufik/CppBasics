@@ -10,7 +10,7 @@ bool Any(int* array, int length)
     if (length == 2)
         return cbrt(pow(array[0], 2) + 2) < 10 || cbrt(pow(array[1], 2) + 2) < 10;
 
-    return Any(array, length / 3) || Any(array + length / 3, 2 * length / 3);
+    return Any(array, length / 3) || Any(array + length / 3, length - length / 3);
 }
 
 bool TryParseInt(char* str, int& result)
